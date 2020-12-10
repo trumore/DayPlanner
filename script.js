@@ -1,5 +1,10 @@
 $(document).ready(function () {
-  var dt = luxon.DateTime.local();
+  var dt = luxon.DateTime.local().toLocaleString({
+    weekday: "long",
+    month: "long",
+    day: "2-digit",
+  });
+
   var toDoList = [];
 
   $("#currentDay").text(dt);
@@ -22,7 +27,9 @@ $(document).ready(function () {
       }
     });
   }
+
   renderPlans();
+
   var storedToDo = JSON.parse(localStorage.getItem("ToDoList"));
 
   /*$(".time-block").each(function () {
