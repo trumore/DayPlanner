@@ -5,16 +5,11 @@ $(document).ready(function () {
     day: "2-digit",
   });
 
-  var toDoList = [];
-
   $("#currentDay").text(dt);
 
   $(".saveBtn").on("click", function () {
     var hour = $(this).siblings(".time-block").text();
     var input = $(this).siblings(".plans").val();
-    //console.log(input);
-    //console.log(hour);
-    //console.log("save button clicked");
     localStorage.setItem(hour, input);
   });
 
@@ -28,21 +23,25 @@ $(document).ready(function () {
     });
   }
 
+  function hourDisplay() {
+    var hourRef = luxon.DateTime.local().toLocaleString({
+      hour: "2-digit",
+      hour12: false,
+    });
+    $(".time-block").each(function () {
+      var eachBlock = parseInt($(this).text());
+      if (eachBlock < hourRef) {
+        $(this).siblings(".plans").addClass("past");
+      } else if (eachBlock == hourRef) {
+        $(this).siblings(".plans").removeClass("past");
+        $(this).siblings(".plans").addClass("present");
+      } else {
+        $(this).siblings(".plans").removeClass("past");
+        $(this).siblings(".plans").removeClass("present");
+        $(this).siblings(".plans").addClass("future");
+      }
+    });
+  }
+  hourDisplay();
   renderPlans();
-
-  var storedToDo = JSON.parse(localStorage.getItem("ToDoList"));
-
-  /*$(".time-block").each(function () {
-    var eachBlock = parseInt($(this).attr("id").split("hour")[1]);
-    if (dt > eachBlock) {
-      $().addClass("#past");
-    }
-  });*/
-
-  //current hour will also be referenced using the dt variable
 });
-
-//if current hour = DateTime hour, current block= addClass.present
-//if current hour < DateTime hour, current block =  addClass.future
-//if current hour > DateTime hour, current block = addClass.past
-//use the
